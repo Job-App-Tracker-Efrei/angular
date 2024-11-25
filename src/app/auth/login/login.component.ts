@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 
+import { HOME } from '@constants/routes';
+
 import { AuthService } from '@core/services/auth.service';
 
 @Component({
@@ -27,7 +29,7 @@ export class LoginComponent implements OnInit {
 
   loginWithGoogle() {
     this.authService.loginWithGoogle().then(() => {
-      console.log('ok');
+      this.router.navigate([HOME]);
     });
   }
 
@@ -35,9 +37,13 @@ export class LoginComponent implements OnInit {
     const { email, password } = this.loginForm.value;
     if (!email || !password) return alert('Please fill all fields');
 
-    this.authService.login(email, password).then(() => {
-      // this.router.navigate(['']);
-      console.log('ok');
-    });
+    this.authService
+      .login(email, password)
+      .then(() => {
+        this.router.navigate([HOME]);
+      })
+      .catch(() => {
+        alert('Invalid email or password');
+      });
   }
 }
