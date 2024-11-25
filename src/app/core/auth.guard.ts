@@ -11,7 +11,7 @@ export const AuthGuard: CanActivateFn = async () => {
   try {
     await userService.getCurrentUser();
     return true;
-  } catch (_error) {
+  } catch {
     router.navigate(['/login']);
     return false;
   }
