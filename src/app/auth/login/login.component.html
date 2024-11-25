@@ -1,0 +1,32 @@
+<section class="login">
+  <div>
+    <h2>Login Form</h2>
+    <form class="login_form" [formGroup]="loginForm" (ngSubmit)="login()">
+      <div class="login_form-container">
+        <input
+          type="email"
+          placeholder="Email"
+          class="input"
+          formControlName="email"
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          class="input"
+          formControlName="password"
+        />
+      </div>
+      <button class="btn">Login</button>
+    </form>
+    <button class="btn btn-google" (click)="loginWithGoogle()">
+      Login with Google
+      <img src="assets/logo/logo-google.png" alt="logo-google" />
+    </button>
+    <div class="footer">
+      <p class="message">Not registered?</p>
+      <a routerLink="/register" class="login_register-link"
+        >Create an account</a
+      >
+    </div>
+  </div>
+</section>
