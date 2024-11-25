@@ -1,7 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FIREBASE_OPTIONS } from '@angular/fire/compat';
 
 import { HeaderComponent } from './header.component';
+
+import { AuthService } from '../core/services/auth.service'; // Import AuthService
+import { UserService } from '../core/services/user.service'; // Import UserService
+
+class MockUserService {}
+
+class MockAuthService {}
 
 describe('HeaderComponent', () => {
   let component: HeaderComponent;
@@ -11,17 +17,8 @@ describe('HeaderComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [HeaderComponent],
       providers: [
-        {
-          provide: FIREBASE_OPTIONS,
-          useValue: {
-            apiKey: 'test-api-key',
-            authDomain: 'test-project.firebaseapp.com',
-            projectId: 'test-project',
-            storageBucket: 'test-project.appspot.com',
-            messagingSenderId: 'test-id',
-            appId: 'test-app-id',
-          },
-        },
+        { provide: UserService, useClass: MockUserService },
+        { provide: AuthService, useClass: MockAuthService },
       ],
     }).compileComponents();
   });
