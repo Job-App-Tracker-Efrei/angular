@@ -1,4 +1,3 @@
-# .github/workflows/ci.yml
 name: CI
 
 on:
@@ -11,8 +10,6 @@ jobs:
   install:
     name: Install dependencies
     runs-on: ubuntu-latest
-    outputs:
-      cache-path: ${{ steps.cache.outputs.cache-hit }}
 
     steps:
       - name: Checkout code
@@ -27,11 +24,14 @@ jobs:
       - name: Install dependencies
         run: yarn install
 
-      - name: Save dependencies
+      - name: Compress node_modules
+        run: tar -czf node_modules.tar.gz node_modules
+
+      - name: Save compressed dependencies
         uses: actions/upload-artifact@v3
         with:
           name: node_modules
-          path: node_modules
+          path: node_modules.tar.gz
 
   lint:
     name: Lint code
@@ -42,10 +42,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Restore dependencies
+      - name: Restore compressed dependencies
         uses: actions/download-artifact@v3
         with:
           name: node_modules
+
+      - name: Decompress dependencies
+        run: tar -xzf node_modules.tar.gz
 
       - name: Lint code
         run: yarn lint
@@ -59,10 +62,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Restore dependencies
+      - name: Restore compressed dependencies
         uses: actions/download-artifact@v3
         with:
           name: node_modules
+
+      - name: Decompress dependencies
+        run: tar -xzf node_modules.tar.gz
 
       - name: Run tests
         run: yarn test --watch=false --browsers=ChromeHeadless
@@ -76,10 +82,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Restore dependencies
+      - name: Restore compressed dependencies
         uses: actions/download-artifact@v3
         with:
           name: node_modules
+
+      - name: Decompress dependencies
+        run: tar -xzf node_modules.tar.gz
 
       - name: Build project
         run: yarn build --configuration production
