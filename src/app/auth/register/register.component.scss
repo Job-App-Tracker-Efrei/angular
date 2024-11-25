@@ -1,0 +1,42 @@
+.register {
+  @apply flex flex-col items-center justify-center h-screen w-full gap-8;
+
+  > div {
+    @apply flex flex-col items-center shadow-2xl p-8 bg-white rounded-lg max-w-[500px] w-[98vw];
+
+    h2 {
+      @apply text-xl font-bold mb-4;
+    }
+
+    .register_form {
+      @apply flex flex-col items-center justify-center gap-2 w-full mt-4;
+
+      .register_form-container {
+        @apply flex flex-col items-center justify-center gap-6 w-full mb-6;
+
+        .input {
+          @apply border border-gray-300 rounded-lg w-full p-2;
+        }
+      }
+    }
+    .btn {
+      @apply bg-blue-500 text-white font-bold rounded-lg w-1/2 p-2;
+    }
+
+    .btn-google {
+      @apply bg-white text-gray-800 flex items-center justify-center gap-2 border border-gray-300 my-4;
+
+      img {
+        width: 25px;
+      }
+    }
+
+    .register_login-link {
+      @apply text-blue-500 font-bold hover:underline;
+    }
+
+    .footer {
+      @apply text-center;
+    }
+  }
+}
