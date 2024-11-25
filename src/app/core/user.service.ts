@@ -2,37 +2,32 @@ import { Injectable } from '@angular/core';
 import { User } from '@angular/fire/auth';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class UserService {
   constructor(private readonly auth: AngularFireAuth) {}
 
-  getCurrentUser(): Promise<User> {
-    return new Promise<User>((resolve, reject) => {
-      this.auth.onAuthStateChanged((user) => {
-        if (user) resolve(user as User);
-        else reject(new Error('No user logged in'));
-      });
+  async getCurrentUser(): Promise<User | null> {
+    return await this.auth.currentUser.then((user) => {
+      if (user) return user as User;
+      else return null;
     });
   }
 
-  updateCurrentUser(user: {
+  async updateCurrentUser(user: {
     displayName?: string;
     photoURL?: string;
   }): Promise<User> {
-    return new Promise<User>((resolve, reject) => {
-      this.auth.currentUser.then((currentUser) => {
-        if (currentUser) {
-          currentUser
-            .updateProfile({
-              displayName: user.displayName,
-              photoURL: user.photoURL,
-            })
-            .then(() => resolve(currentUser as User))
-            .catch((error) => reject(new Error(error)));
-        } else {
-          throw new Error('No user logged in');
-        }
-      });
+    return await this.auth.currentUser.then(async (currentUser) => {
+      if (currentUser) {
+        return await currentUser
+          .updateProfile({
+            displayName: user.displayName,
+            photoURL: user.photoURL,
+          })
+          .then(() => currentUser as User);
+      } else {
+        throw new Error('No user logged in');
+      }
     });
   }
 }

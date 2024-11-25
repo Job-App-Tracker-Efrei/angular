@@ -7,12 +7,14 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
+import { FooterComponent } from './footer/footer.component';
+import { HeaderComponent } from './header/header.component';
 import { HomeComponent } from './home/home.component';
 
 import { environment } from '../environments/environment';
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent],
+  declarations: [AppComponent, HomeComponent, HeaderComponent, FooterComponent],
   imports: [
     AngularFireAuthModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),

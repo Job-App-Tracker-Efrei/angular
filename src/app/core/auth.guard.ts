@@ -2,6 +2,8 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 
+import { LOGIN } from '@constants/routes';
+
 import { UserService } from '../core/user.service';
 
 export const AuthGuard: CanActivateFn = async () => {
@@ -9,10 +11,14 @@ export const AuthGuard: CanActivateFn = async () => {
   const router = inject(Router);
 
   try {
-    await userService.getCurrentUser();
+    const user = await userService.getCurrentUser();
+    if (!user) {
+      router.navigate([LOGIN]);
+      return false;
+    }
     return true;
   } catch (_error) {
-    router.navigate(['/login']);
+    router.navigate([LOGIN]);
     return false;
   }
 };

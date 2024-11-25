@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { GoogleAuthProvider, User } from '@angular/fire/auth';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class AuthService {
   constructor(private readonly auth: AngularFireAuth) {}
 
@@ -15,8 +15,8 @@ export class AuthService {
     return user as User;
   }
 
-  loginWithGoogle(): Promise<User> {
-    return this.authLogin(new GoogleAuthProvider());
+  async loginWithGoogle(): Promise<User> {
+    return await this.authLogin(new GoogleAuthProvider());
   }
 
   async register(email: string, password: string): Promise<User> {
@@ -31,7 +31,7 @@ export class AuthService {
       .then(({ user }) => user as User);
   }
 
-  logout() {
-    return this.auth.signOut();
+  async logout() {
+    return await this.auth.signOut();
   }
 }
