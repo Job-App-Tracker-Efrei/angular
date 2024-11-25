@@ -130,9 +130,7 @@
         "plugin:@angular-eslint/template/accessibility"
       ],
       "rules": {},
-      "options": {
-        "parser": "angular"
-      }
-    },
+      "parser": "@angular-eslint/template-parser"
+    }
   ]
 }
