@@ -5,11 +5,10 @@ import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 
-import { AuthService } from '@core/services/auth.service';
-import { UserService } from '@core/services/user.service';
-
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
+import { LoginComponent } from './auth/login/login.component';
+import { RegisterComponent } from './auth/register/register.component';
 import { FooterComponent } from './footer/footer.component';
 import { HeaderComponent } from './header/header.component';
 import { HomeComponent } from './home/home.component';
@@ -17,7 +16,14 @@ import { HomeComponent } from './home/home.component';
 import { environment } from '../environments/environment';
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent, HeaderComponent, FooterComponent],
+  declarations: [
+    AppComponent,
+    HomeComponent,
+    HeaderComponent,
+    FooterComponent,
+    LoginComponent,
+    RegisterComponent,
+  ],
   imports: [
     AngularFireAuthModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
@@ -27,7 +33,7 @@ import { environment } from '../environments/environment';
     FormsModule,
     ReactiveFormsModule,
   ],
-  providers: [AuthService, UserService],
+  providers: [],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
