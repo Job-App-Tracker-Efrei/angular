@@ -5,6 +5,9 @@ import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 
+import { AuthService } from '@core/services/auth.service';
+import { UserService } from '@core/services/user.service';
+
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { FooterComponent } from './footer/footer.component';
@@ -24,7 +27,7 @@ import { environment } from '../environments/environment';
     FormsModule,
     ReactiveFormsModule,
   ],
-  providers: [],
+  providers: [AuthService, UserService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

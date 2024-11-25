@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { GoogleAuthProvider, User } from '@angular/fire/auth';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class AuthService {
   constructor(private readonly auth: AngularFireAuth) {}
 
