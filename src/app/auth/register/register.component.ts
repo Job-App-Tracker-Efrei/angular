@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 
-import { LOGIN } from '@constants/routes';
+import { HOME, LOGIN } from '@constants/routes';
 
 import { AuthService } from '@core/services/auth.service';
 
@@ -29,7 +29,7 @@ export class RegisterComponent implements OnInit {
 
   loginWithGoogle() {
     this.authService.loginWithGoogle().then(() => {
-      console.log('ok');
+      this.router.navigate([HOME]);
     });
   }
 
