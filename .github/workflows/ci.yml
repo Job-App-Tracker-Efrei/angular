@@ -1,0 +1,100 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  install:
+    name: Install dependencies
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+          cache: 'yarn'
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Compress node_modules
+        run: tar -czf node_modules.tar.gz node_modules
+
+      - name: Save compressed dependencies
+        uses: actions/upload-artifact@v3
+        with:
+          name: node_modules
+          path: node_modules.tar.gz
+
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    needs: install
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Restore compressed dependencies
+        uses: actions/download-artifact@v3
+        with:
+          name: node_modules
+
+      - name: Decompress dependencies
+        run: tar -xzf node_modules.tar.gz
+
+      - name: Lint code
+        run: yarn lint
+
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    needs: install
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Restore compressed dependencies
+        uses: actions/download-artifact@v3
+        with:
+          name: node_modules
+
+      - name: Decompress dependencies
+        run: tar -xzf node_modules.tar.gz
+
+      - name: Run tests
+        run: yarn test --watch=false --browsers=ChromeHeadless
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    needs: install
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Restore compressed dependencies
+        uses: actions/download-artifact@v3
+        with:
+          name: node_modules
+
+      - name: Decompress dependencies
+        run: tar -xzf node_modules.tar.gz
+
+      - name: Build project
+        run: yarn build --configuration production
+
+      - name: Save build artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: dist
+          path: dist/
