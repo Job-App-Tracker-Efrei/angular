@@ -7,9 +7,9 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { HOME, LOGIN, REGISTER } from '@constants/routes';
 
-import { LoginComponent } from './auth/login/login.component';
-import { RegisterComponent } from './auth/register/register.component';
-import { HomeComponent } from './home/home.component';
+import { LoginComponent } from '@pages/auth/login/login.component';
+import { RegisterComponent } from '@pages/auth/register/register.component';
+import { HomeComponent } from '@pages/home/home.component';
 
 const routes: Routes = [
   {

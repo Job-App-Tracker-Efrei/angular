@@ -1,12 +1,15 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FIREBASE_OPTIONS } from '@angular/fire/compat';
 
+import { AuthService } from '@core/services/auth.service';
+import { UserService } from '@core/services/user.service';
+
+import { JobApplicationTableComponent } from './components/job-application-table/job-application-table.component';
+import { MetricsComponent } from './components/metrics/metrics.component';
 import { HomeComponent } from './home.component';
 
-import { AuthService } from '../core/services/auth.service'; // Import AuthService
-import { UserService } from '../core/services/user.service'; // Import UserService
-import { FooterComponent } from '../footer/footer.component';
-import { HeaderComponent } from '../header/header.component';
+import { FooterComponent } from '../../footer/footer.component';
+import { HeaderComponent } from '../../header/header.component';
 
 class MockAuthService {}
 
@@ -18,7 +21,13 @@ describe('HomeComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [HomeComponent, HeaderComponent, FooterComponent],
+      declarations: [
+        HomeComponent,
+        HeaderComponent,
+        FooterComponent,
+        MetricsComponent,
+        JobApplicationTableComponent,
+      ],
       providers: [
         {
           provide: FIREBASE_OPTIONS,

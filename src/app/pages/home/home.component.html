@@ -1,0 +1,11 @@
+<app-header></app-header>
+<section class="flex flex-col items-center justify-center">
+  <h2 class="text-xl font-bold text-center mb-4">
+    Welcome to Job App Tracker!
+  </h2>
+  <app-metrics [metrics]="metrics"></app-metrics>
+  <app-job-application-table
+    [jobApplications]="jobApplications"
+  ></app-job-application-table>
+</section>
+<app-footer></app-footer>

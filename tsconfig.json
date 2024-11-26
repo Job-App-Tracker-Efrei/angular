@@ -6,6 +6,7 @@
     "paths": {
       "@constants/*": ["src/constants/*"],
       "@core/*": ["src/app/core/*"],
+      "@pages/*": ["src/app/pages/*"],
     },
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,
