@@ -9,6 +9,7 @@ on:
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
+    name: Build and Deploy to Firebase Hosting 🚀
     steps:
       - uses: actions/checkout@v4
       - run: yarn && yarn build
