@@ -1,9 +1,9 @@
-<header class="header">
-  <h1 routerLink="/">
+<header class="bg-blue-500 text-white p-4 flex justify-between items-center">
+  <h1 routerLink="/" class="text-2xl font-bold">
     <button>Job App Tracker</button>
   </h1>
-  <div class="header_user">
-    <h2>{{ user?.displayName }}</h2>
+  <div class="flex items-center">
+    <h2 class="text-lg font-bold mr-4">{{ user?.displayName }}</h2>
     <button *ngIf="user" (click)="logout()">Logout</button>
   </div>
 </header>

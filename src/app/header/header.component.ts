@@ -2,13 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { User } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 
+import { LOGIN } from '@constants/routes';
+
 import { AuthService } from '@core/services/auth.service';
 import { UserService } from '@core/services/user.service';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent implements OnInit {
   user: User | null = null;
@@ -25,6 +26,6 @@ export class HeaderComponent implements OnInit {
 
   logout() {
     this.authService.logout();
-    this.router.navigate(['/login']);
+    this.router.navigate([LOGIN]);
   }
 }
