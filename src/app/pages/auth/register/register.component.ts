@@ -23,6 +23,7 @@ export class RegisterComponent implements OnInit {
     this.registerForm = this.fb.group({
       email: new FormControl(''),
       password: new FormControl(''),
+      confirmPassword: new FormControl(''),
     });
   }
 
@@ -33,8 +34,11 @@ export class RegisterComponent implements OnInit {
   }
 
   register() {
-    const { email, password } = this.registerForm.value;
-    if (!email || !password) return alert('Please fill all fields');
+    const { email, password, confirmPassword } = this.registerForm.value;
+    if (!email || !password || !confirmPassword)
+      return alert('Please fill all fields');
+
+    if (password !== confirmPassword) return alert('Passwords do not match');
 
     this.authService.register(email, password).then(() => {
       this.router.navigate([LOGIN]);
