@@ -1,7 +1,7 @@
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { AngularFireModule } from '@angular/fire/compat';
-import { AngularFireAuthModule } from '@angular/fire/compat/auth';
+import { AngularFireAuthModule, PERSISTENCE } from '@angular/fire/compat/auth';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 
@@ -33,7 +33,7 @@ import { environment } from '../environments/environment';
     FormsModule,
     ReactiveFormsModule,
   ],
-  providers: [],
+  providers: [{ provide: PERSISTENCE, useValue: 'session' }],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

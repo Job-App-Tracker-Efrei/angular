@@ -1,9 +1,11 @@
 import { NgModule } from '@angular/core';
+import {
+  AngularFireAuthGuard,
+  redirectUnauthorizedTo,
+} from '@angular/fire/compat/auth-guard';
 import { RouterModule, Routes } from '@angular/router';
 
 import { HOME, LOGIN, REGISTER } from '@constants/routes';
-
-import { AuthGuard } from '@core/guard/auth.guard';
 
 import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
@@ -13,7 +15,8 @@ const routes: Routes = [
   {
     path: HOME,
     component: HomeComponent,
-    canActivate: [AuthGuard],
+    canActivate: [AngularFireAuthGuard],
+    data: { authGuardPipe: () => redirectUnauthorizedTo([LOGIN]) },
   },
   {
     path: LOGIN,

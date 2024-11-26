@@ -4,5 +4,6 @@
   </h1>
   <div class="header_user">
     <h2>{{ user?.displayName }}</h2>
+    <button *ngIf="user" (click)="logout()">Logout</button>
   </div>
 </header>

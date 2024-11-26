@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from '@angular/fire/auth';
+import { Router } from '@angular/router';
 
 import { AuthService } from '@core/services/auth.service';
 import { UserService } from '@core/services/user.service';
@@ -15,6 +16,7 @@ export class HeaderComponent implements OnInit {
   constructor(
     private readonly authService: AuthService,
     private readonly userService: UserService,
+    private readonly router: Router,
   ) {}
 
   async ngOnInit() {
@@ -23,5 +25,6 @@ export class HeaderComponent implements OnInit {
 
   logout() {
     this.authService.logout();
+    this.router.navigate(['/login']);
   }
 }
