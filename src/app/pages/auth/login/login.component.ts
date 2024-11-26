@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 import { HOME } from '@constants/routes';
 
@@ -17,6 +18,7 @@ export class LoginComponent implements OnInit {
     private readonly fb: FormBuilder,
     private readonly authService: AuthService,
     private readonly router: Router,
+    private readonly toastr: ToastrService,
   ) {}
 
   ngOnInit(): void {
@@ -34,15 +36,19 @@ export class LoginComponent implements OnInit {
 
   login() {
     const { email, password } = this.loginForm.value;
-    if (!email || !password) return alert('Please fill all fields');
+    if (!email || !password) {
+      this.toastr.error('Please fill all fields');
+      return;
+    }
 
     this.authService
       .login(email, password)
       .then(() => {
+        this.toastr.success('Logged in successfully');
         this.router.navigate([HOME]);
       })
       .catch(() => {
-        alert('Invalid email or password');
+        this.toastr.error('Invalid email or password');
       });
   }
 }
