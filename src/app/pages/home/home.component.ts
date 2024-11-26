@@ -1,4 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+
+import { JobApplicationService } from '@core/services/job-application.service';
 
 import {
   type JobApplication,
@@ -10,7 +13,7 @@ import { type Metric } from 'src/types/metric.type';
   selector: 'app-home',
   templateUrl: './home.component.html',
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
   metrics: Metric[] = [
     { label: 'Job Applications', value: 10 },
     { label: 'Pending', value: 5 },
@@ -18,32 +21,54 @@ export class HomeComponent {
     { label: 'Rejected', value: 3 },
   ];
 
-  jobApplications: JobApplication[] = [
-    {
-      id: '1',
-      company: 'Entreprise A',
-      position: 'Développeur Frontend',
-      status: JobApplicationStatus.accepted,
-      date: '2023-11-10',
-      userId: '1',
-    },
-    {
-      id: '2',
-      company: 'Entreprise B',
-      position: 'Développeur Backend',
-      status: JobApplicationStatus.pending,
-      date: '2023-10-20',
-      userId: '1',
-    },
-    {
-      id: '3',
-      company: 'Entreprise C',
-      position: 'Data Analyst',
-      status: JobApplicationStatus.rejected,
-      date: '2023-09-15',
-      userId: '1',
-    },
-  ];
+  jobApplications: JobApplication[] = [];
+  showAddJobApplicationForm = false;
+  jobApplicationForm!: FormGroup;
 
-  constructor() {}
+  constructor(
+    private readonly jobApplicationService: JobApplicationService,
+    private readonly fb: FormBuilder,
+  ) {}
+
+  async ngOnInit(): Promise<void> {
+    this.jobApplications =
+      await this.jobApplicationService.getJobApplications();
+
+    this.jobApplicationForm = this.fb.group({
+      company: ['', Validators.required],
+      position: ['', Validators.required],
+      status: [JobApplicationStatus.pending, Validators.required],
+      date: [new Date(), Validators.required],
+      lastUpdate: [new Date()],
+    });
+  }
+
+  addJobApplication(): void {
+    if (!this.jobApplicationForm.valid) {
+      console.error('Invalid form');
+      return;
+    }
+
+    this.jobApplications.push(this.jobApplicationForm.value);
+    this.jobApplicationService.addJobApplication(this.jobApplicationForm.value);
+    this.showAddJobApplicationForm = false;
+  }
+
+  // updateJobApplication(jobApplication: JobApplication): void {
+  //   this.jobApplicationService.updateJobApplication(
+  //     jobApplication.id,
+  //     jobApplication,
+  //   );
+  //   this.jobApplications = this.jobApplications.map((job) =>
+  //     job.id === jobApplication.id ? jobApplication : job,
+  //   );
+  // }
+  updateJobApplication(id: string): void {
+    console.log('updateJobApplication', id);
+  }
+
+  deleteJobApplication(id: string): void {
+    this.jobApplicationService.deleteJobApplication(id);
+    this.jobApplications = this.jobApplications.filter((job) => job.id !== id);
+  }
 }

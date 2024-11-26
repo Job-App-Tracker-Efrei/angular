@@ -10,5 +10,11 @@ export type JobApplication = {
   position: string;
   company: string;
   status: JobApplicationStatus;
-  date: string;
+  date: Date;
+  lastUpdate: Date;
+};
+
+export type JobApplicationResponse = JobApplication & {
+  date: { seconds: number; nanoseconds: number };
+  lastUpdate: { seconds: number; nanoseconds: number };
 };
