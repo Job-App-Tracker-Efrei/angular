@@ -6,7 +6,7 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 export class AuthService {
   constructor(private readonly auth: AngularFireAuth) {}
 
-  private async authLogin(provider: GoogleAuthProvider): Promise<User> {
+  private async loginWithProvider(provider: GoogleAuthProvider): Promise<User> {
     const { user } = await this.auth
       .signInWithPopup(provider)
       .catch((error) => {
@@ -16,7 +16,7 @@ export class AuthService {
   }
 
   async loginWithGoogle(): Promise<User> {
-    return await this.authLogin(new GoogleAuthProvider());
+    return await this.loginWithProvider(new GoogleAuthProvider());
   }
 
   async register(email: string, password: string): Promise<User> {
