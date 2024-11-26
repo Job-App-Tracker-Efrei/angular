@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 
 import { AuthService } from '@core/services/auth.service';
 
@@ -15,7 +16,13 @@ describe('LoginComponent', () => {
     TestBed.configureTestingModule({
       declarations: [LoginComponent],
       imports: [FormsModule, ReactiveFormsModule],
-      providers: [{ provide: AuthService, useClass: MockAuthService }],
+      providers: [
+        { provide: AuthService, useClass: MockAuthService },
+        {
+          provide: ToastrService,
+          useValue: { error: () => {}, success: () => {} },
+        },
+      ],
     });
     fixture = TestBed.createComponent(LoginComponent);
     component = fixture.componentInstance;
