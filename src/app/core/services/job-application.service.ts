@@ -3,7 +3,10 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { firstValueFrom } from 'rxjs';
 
-import { type JobApplication } from 'src/types/job-application.type';
+import {
+  type JobApplication,
+  type JobApplicationResponse,
+} from 'src/types/job-application.type';
 
 @Injectable({ providedIn: 'root' })
 export class JobApplicationService {
@@ -15,13 +18,12 @@ export class JobApplicationService {
   ) {}
 
   async addJobApplication(
-    jobApplication: Omit<JobApplication, 'userId'>,
+    jobApplication: Omit<JobApplication, 'userId' | 'id'>,
   ): Promise<void> {
     return await this.auth.currentUser.then((user) => {
       if (!user) throw new Error('User not found');
-      const userId = user.uid;
-      const data = { ...jobApplication, userId };
       const docRef = this.firestore.collection(this.collectionName).doc();
+      const data = { ...jobApplication, userId: user.uid, id: docRef.ref.id };
       return docRef.set(data);
     });
   }
@@ -29,15 +31,46 @@ export class JobApplicationService {
   async getJobApplications(): Promise<JobApplication[]> {
     const user = await this.auth.currentUser;
     if (!user) throw new Error('User not found');
-    const userId = user.uid;
 
-    return await firstValueFrom(
+    const jobs = await firstValueFrom(
       this.firestore
-        .collection<JobApplication>(this.collectionName, (ref) =>
-          ref.where('userId', '==', userId),
+        .collection<JobApplicationResponse>(this.collectionName, (ref) =>
+          ref.where('userId', '==', user.uid),
         )
         .valueChanges(),
     );
+
+    return jobs.map((job) => ({
+      ...job,
+      date: new Date(job.date.seconds * 1000),
+      lastUpdate: new Date(job.lastUpdate.seconds * 1000),
+    }));
+  }
+
+  async getJobApplicationById(id: string): Promise<JobApplication> {
+    const jobApplication = await firstValueFrom(
+      this.firestore
+        .collection<JobApplicationResponse>(this.collectionName)
+        .doc(id)
+        .get(),
+    );
+
+    if (!jobApplication.exists) {
+      console.error('Job application not found');
+      throw new Error('Job application not found');
+    }
+
+    const data = jobApplication.data();
+    if (!data) {
+      console.error('Job application data not found');
+      throw new Error('Job application data not found');
+    }
+
+    return {
+      ...data,
+      date: new Date(data.date.seconds * 1000),
+      lastUpdate: new Date(data.lastUpdate.seconds * 1000),
+    };
   }
 
   async updateJobApplication(
@@ -51,6 +84,14 @@ export class JobApplicationService {
   }
 
   async deleteJobApplication(id: string): Promise<void> {
+    const jobApplication = await firstValueFrom(
+      this.firestore.collection(this.collectionName).doc(id).get(),
+    );
+    if (!jobApplication.exists) {
+      console.error('Job application not found');
+      return;
+    }
+
     return await this.firestore
       .collection(this.collectionName)
       .doc(id)

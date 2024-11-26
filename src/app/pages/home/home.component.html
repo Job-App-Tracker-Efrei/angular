@@ -4,8 +4,20 @@
     Welcome to Job App Tracker!
   </h2>
   <app-metrics [metrics]="metrics"></app-metrics>
+</section>
+<section class="flex flex-col items-center justify-center">
+  <h2 class="text-xl font-bold text-center mb-4">Job Applications:</h2>
+  <button
+    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+    (click)="addJobApplication()"
+  >
+    Add Job Application
+  </button>
+
   <app-job-application-table
     [jobApplications]="jobApplications"
+    (updateJobApplication)="updateJobApplication($event)"
+    (deleteJobApplication)="deleteJobApplication($event)"
   ></app-job-application-table>
 </section>
 <!-- <app-footer></app-footer> -->
