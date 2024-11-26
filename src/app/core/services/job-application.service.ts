@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { Observable } from 'rxjs';
+import { firstValueFrom } from 'rxjs';
 
 import { type JobApplication } from 'src/types/job-application.type';
 
@@ -26,16 +26,18 @@ export class JobApplicationService {
     });
   }
 
-  async getJobApplications(): Promise<Observable<JobApplication[]>> {
-    return await this.auth.currentUser.then((user) => {
-      if (!user) throw new Error('User not found');
-      const userId = user.uid;
-      return this.firestore
-        .collection(this.collectionName, (ref) =>
+  async getJobApplications(): Promise<JobApplication[]> {
+    const user = await this.auth.currentUser;
+    if (!user) throw new Error('User not found');
+    const userId = user.uid;
+
+    return await firstValueFrom(
+      this.firestore
+        .collection<JobApplication>(this.collectionName, (ref) =>
           ref.where('userId', '==', userId),
         )
-        .valueChanges() as Observable<JobApplication[]>;
-    });
+        .valueChanges(),
+    );
   }
 
   async updateJobApplication(

@@ -3,6 +3,6 @@ export interface JobApplication {
   userId: string;
   position: string;
   company: string;
-  status: string;
+  status: 'accepted' | 'rejected' | 'pending';
   date: string;
 }
