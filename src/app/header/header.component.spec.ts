@@ -1,9 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { HeaderComponent } from './header.component';
+import { AuthService } from '@core/services/auth.service';
+import { UserService } from '@core/services/user.service';
 
-import { AuthService } from '../core/services/auth.service'; // Import AuthService
-import { UserService } from '../core/services/user.service'; // Import UserService
+import { HeaderComponent } from './header.component';
 
 class MockUserService {}
 
