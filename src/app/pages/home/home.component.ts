@@ -75,7 +75,6 @@ export class HomeComponent implements OnInit {
         }
         this.jobApplications = [...this.jobApplications, jobApplication];
         this.showModal = false;
-        this.toastr.success('Job application added successfully');
       });
   }
 
