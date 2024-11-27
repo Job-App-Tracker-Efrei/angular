@@ -1,23 +1,46 @@
-<app-header></app-header>
-<section class="flex flex-col items-center justify-center">
-  <h2 class="text-xl font-bold text-center mb-4">
-    Welcome to Job App Tracker!
-  </h2>
-  <app-metrics [metrics]="metrics"></app-metrics>
-</section>
-<section class="flex flex-col items-center justify-center">
-  <h2 class="text-xl font-bold text-center mb-4">Job Applications:</h2>
-  <button
-    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-    (click)="addJobApplication()"
-  >
-    Add Job Application
-  </button>
+<div class="min-h-screen bg-gray-100 flex flex-col">
+  <!-- Header -->
+  <app-header></app-header>
 
-  <app-job-application-table
-    [jobApplications]="jobApplications"
-    (updateJobApplication)="updateJobApplication($event)"
-    (deleteJobApplication)="deleteJobApplication($event)"
-  ></app-job-application-table>
-</section>
-<!-- <app-footer></app-footer> -->
+  <!-- Main content -->
+  <main class="flex-grow container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold text-gray-800 mb-8 text-center">
+      Welcome to Job App Tracker!
+    </h1>
+
+    <!-- Metrics -->
+    <app-metrics [metrics]="metrics" class="mb-8"></app-metrics>
+
+    <!-- Job Applications -->
+    <section class="bg-white rounded-lg shadow-md overflow-hidden">
+      <div
+        class="p-6 flex justify-between items-center border-b border-gray-200"
+      >
+        <h2 class="text-xl font-semibold text-gray-800">Job Applications</h2>
+        <button
+          (click)="openAddJobModal()"
+          class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-md text-sm font-medium transition duration-150 ease-in-out"
+        >
+          New Job Application
+        </button>
+      </div>
+
+      <app-job-application-table
+        [jobApplications]="jobApplications"
+        (updateJobApplication)="openAddJobModal($event)"
+        (deleteJobApplication)="deleteJobApplication($event)"
+      ></app-job-application-table>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <app-footer></app-footer>
+
+  <!-- Add/Edit Job Modal -->
+  <app-add-job-modal
+    *ngIf="showModal"
+    [formGroup]="jobApplicationForm"
+    (closeModal)="closeAddJobModal()"
+    (addJob)="addJobApplication($event)"
+  ></app-add-job-modal>
+</div>

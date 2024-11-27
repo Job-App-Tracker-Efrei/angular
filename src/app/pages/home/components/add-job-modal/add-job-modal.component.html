@@ -1,0 +1,49 @@
+<div class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full" id="modal-overlay">
+    <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white"
+         [@modalAnimation]>
+      <div class="mt-3 text-center">
+        <h3 class="text-lg leading-6 font-medium text-gray-900">Add New Job Application</h3>
+        <form [formGroup]="jobForm" (ngSubmit)="onSubmit()" class="mt-2 text-left">
+          <div class="mb-4">
+            <label for="company" class="block text-sm font-medium text-gray-700">Company</label>
+            <input type="text" id="company" formControlName="company"
+                   class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-orange-500 focus:border-orange-500">
+          </div>
+          <div class="mb-4">
+            <label for="position" class="block text-sm font-medium text-gray-700">Position</label>
+            <input type="text" id="position" formControlName="position"
+                   class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-orange-500 focus:border-orange-500">
+          </div>
+          <div class="mb-4">
+            <label for="status" class="block text-sm font-medium text-gray-700">Status</label>
+            <select id="status" formControlName="status"
+                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-orange-500 focus:border-orange-500">
+              <option value="pending">Pending</option>
+              <option value="accepted">Accepted</option>
+              <option value="rejected">Rejected</option>
+            </select>
+          </div>
+          <div class="mb-4">
+            <label for="date" class="block text-sm font-medium text-gray-700">Date Applied</label>
+            <input type="date" id="date" formControlName="date"
+                   class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-orange-500 focus:border-orange-500">
+          </div>
+          <div class="flex justify-end space-x-3">
+          <button
+            type="button"
+            (click)="onClose()"
+            class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-gray-700 bg-gray-200 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+              >
+              Cancel
+            </button>
+            <button 
+                type="submit"
+                class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500"
+              >
+              Add Job
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
