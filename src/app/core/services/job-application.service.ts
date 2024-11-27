@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { ToastrService } from 'ngx-toastr';
 import { firstValueFrom } from 'rxjs';
 
 import {
@@ -15,22 +16,31 @@ export class JobApplicationService {
   constructor(
     private readonly firestore: AngularFirestore,
     private readonly auth: AngularFireAuth,
+    private readonly toastr: ToastrService,
   ) {}
 
   async addJobApplication(
     jobApplication: Omit<JobApplication, 'userId' | 'id'>,
-  ): Promise<void> {
-    return await this.auth.currentUser.then((user) => {
-      if (!user) throw new Error('User not found');
-      const docRef = this.firestore.collection(this.collectionName).doc();
-      const data = { ...jobApplication, userId: user.uid, id: docRef.ref.id };
-      return docRef.set(data);
-    });
+  ): Promise<boolean> {
+    const user = await this.auth.currentUser;
+    if (!user) {
+      this.toastr.error('User not found');
+      return false;
+    }
+
+    const docRef = this.firestore.collection(this.collectionName).doc();
+    const data = { ...jobApplication, userId: user.uid, id: docRef.ref.id };
+    await docRef.set(data);
+    this.toastr.success('Job application added');
+    return true;
   }
 
   async getJobApplications(): Promise<JobApplication[]> {
     const user = await this.auth.currentUser;
-    if (!user) throw new Error('User not found');
+    if (!user) {
+      this.toastr.error('User not found');
+      throw new Error('User not found');
+    }
 
     const jobs = await firstValueFrom(
       this.firestore
@@ -56,13 +66,13 @@ export class JobApplicationService {
     );
 
     if (!jobApplication.exists) {
-      console.error('Job application not found');
+      this.toastr.error('Job application not found');
       throw new Error('Job application not found');
     }
 
     const data = jobApplication.data();
     if (!data) {
-      console.error('Job application data not found');
+      this.toastr.error('Job application data not found');
       throw new Error('Job application data not found');
     }
 
@@ -73,28 +83,32 @@ export class JobApplicationService {
     };
   }
 
-  async updateJobApplication(
-    id: string,
-    jobApplication: JobApplication,
-  ): Promise<void> {
-    return await this.firestore
-      .collection(this.collectionName)
-      .doc(id)
-      .update(jobApplication);
-  }
-
-  async deleteJobApplication(id: string): Promise<void> {
+  async updateJobApplication(id: string, data: JobApplication): Promise<void> {
     const jobApplication = await firstValueFrom(
       this.firestore.collection(this.collectionName).doc(id).get(),
     );
     if (!jobApplication.exists) {
-      console.error('Job application not found');
+      this.toastr.error('Job application not found');
       return;
     }
 
     return await this.firestore
       .collection(this.collectionName)
       .doc(id)
-      .delete();
+      .update(data);
+  }
+
+  async deleteJobApplication(id: string): Promise<boolean> {
+    const jobApplication = await firstValueFrom(
+      this.firestore.collection(this.collectionName).doc(id).get(),
+    );
+    if (!jobApplication.exists) {
+      this.toastr.error('Job application not found');
+      return false;
+    }
+
+    await this.firestore.collection(this.collectionName).doc(id).delete();
+    this.toastr.success('Job application deleted');
+    return true;
   }
 }

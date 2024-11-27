@@ -43,7 +43,8 @@ export class LoginComponent implements OnInit {
 
     this.authService
       .login(email, password)
-      .then(() => {
+      .then((user) => {
+        if (!user) return;
         this.toastr.success('Logged in successfully');
         this.router.navigate([HOME]);
       })

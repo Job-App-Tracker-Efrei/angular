@@ -1,10 +1,14 @@
 import { Injectable } from '@angular/core';
 import { User } from '@angular/fire/auth';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
-  constructor(private readonly auth: AngularFireAuth) {}
+  constructor(
+    private readonly auth: AngularFireAuth,
+    private readonly toastr: ToastrService,
+  ) {}
 
   async getCurrentUser(): Promise<User | null> {
     return await this.auth.currentUser.then((user) => {
@@ -26,6 +30,7 @@ export class UserService {
           })
           .then(() => currentUser as User);
       } else {
+        this.toastr.error('No user logged in');
         throw new Error('No user logged in');
       }
     });
