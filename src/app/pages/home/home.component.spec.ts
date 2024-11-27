@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FIREBASE_OPTIONS } from '@angular/fire/compat';
+import { ToastrService } from 'ngx-toastr';
 
 import { AuthService } from '@core/services/auth.service';
 import { UserService } from '@core/services/user.service';
@@ -42,6 +43,7 @@ describe('HomeComponent', () => {
         },
         { provide: AuthService, useClass: MockAuthService },
         { provide: UserService, useClass: MockUserService },
+        { provide: ToastrService, useValue: {} },
       ],
     }).compileComponents();
   });

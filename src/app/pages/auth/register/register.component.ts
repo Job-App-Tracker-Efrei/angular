@@ -52,7 +52,8 @@ export class RegisterComponent implements OnInit {
       return;
     }
 
-    this.authService.register(email, password).then(() => {
+    this.authService.register(email, password).then((user) => {
+      if (!user) return;
       this.toastr.success('Registered successfully');
       this.router.navigate([LOGIN]);
     });

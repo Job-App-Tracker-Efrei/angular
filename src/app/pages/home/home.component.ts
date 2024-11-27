@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 
 import { JobApplicationService } from '@core/services/job-application.service';
 
@@ -28,6 +29,7 @@ export class HomeComponent implements OnInit {
   constructor(
     private readonly jobApplicationService: JobApplicationService,
     private readonly fb: FormBuilder,
+    private readonly toastr: ToastrService,
   ) {}
 
   async ngOnInit(): Promise<void> {
@@ -45,13 +47,17 @@ export class HomeComponent implements OnInit {
 
   addJobApplication(): void {
     if (!this.jobApplicationForm.valid) {
-      console.error('Invalid form');
+      this.toastr.error('Invalid form');
       return;
     }
 
-    this.jobApplications.push(this.jobApplicationForm.value);
-    this.jobApplicationService.addJobApplication(this.jobApplicationForm.value);
-    this.showAddJobApplicationForm = false;
+    this.jobApplicationService
+      .addJobApplication(this.jobApplicationForm.value)
+      .then((success) => {
+        if (!success) return;
+        this.jobApplications.push(this.jobApplicationForm.value);
+        this.showAddJobApplicationForm = false;
+      });
   }
 
   // updateJobApplication(jobApplication: JobApplication): void {
@@ -68,7 +74,11 @@ export class HomeComponent implements OnInit {
   }
 
   deleteJobApplication(id: string): void {
-    this.jobApplicationService.deleteJobApplication(id);
-    this.jobApplications = this.jobApplications.filter((job) => job.id !== id);
+    this.jobApplicationService.deleteJobApplication(id).then((success) => {
+      if (!success) return;
+      this.jobApplications = this.jobApplications.filter(
+        (job) => job.id !== id,
+      );
+    });
   }
 }
