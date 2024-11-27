@@ -16,10 +16,10 @@ import { type Metric } from 'src/types/metric.type';
 })
 export class HomeComponent implements OnInit {
   metrics: Metric[] = [
-    { label: 'Job Applications', value: 10, icon: 'briefcase' },
-    { label: 'Pending', value: 5, icon: 'hourglass-half' },
-    { label: 'Accepted', value: 2, icon: 'check' },
-    { label: 'Rejected', value: 3, icon: 'times' },
+    { label: 'Job Applications', value: 0, icon: 'briefcase' },
+    { label: 'Pending', value: 0, icon: 'clock' },
+    { label: 'Accepted', value: 0, icon: 'check-circle' },
+    { label: 'Rejected', value: 0, icon: 'x-circle' },
   ];
 
   jobApplications: JobApplication[] = [];
@@ -37,6 +37,8 @@ export class HomeComponent implements OnInit {
     this.jobApplications =
       await this.jobApplicationService.getJobApplications();
 
+    this.updateMetrics();
+
     this.jobApplicationForm = this.fb.group({
       company: ['', [Validators.required]],
       position: ['', [Validators.required]],
@@ -50,32 +52,28 @@ export class HomeComponent implements OnInit {
     return date.toISOString().split('T')[0];
   }
 
-  addJobApplication(formGroup: FormGroup): void {
-    if (!formGroup.valid) {
-      if (formGroup.get('date')?.errors?.['required']) {
-        this.toastr.error('Application date is required');
-      } else {
-        this.toastr.error('Please fill in all required fields');
+  private updateMetrics(): void {
+    const count = [0, 0, 0, 0];
+    this.jobApplications.forEach((job) => {
+      count[0]++;
+      switch (job.status) {
+        case JobApplicationStatus.pending:
+          count[1]++;
+          break;
+        case JobApplicationStatus.accepted:
+          count[2]++;
+          break;
+        case JobApplicationStatus.rejected:
+          count[3]++;
+          break;
+        default:
+          break;
       }
-      return;
-    }
-
-    const jobApplication = {
-      ...formGroup.value,
-      date: new Date(formGroup.value.date),
-      lastUpdate: new Date(),
-    };
-
-    this.jobApplicationService
-      .addJobApplication(jobApplication)
-      .then((success) => {
-        if (!success) {
-          this.toastr.error('Failed to add job application');
-          return;
-        }
-        this.jobApplications = [...this.jobApplications, jobApplication];
-        this.showModal = false;
-      });
+    });
+    this.metrics[0].value = count[0];
+    this.metrics[1].value = count[1];
+    this.metrics[2].value = count[2];
+    this.metrics[3].value = count[3];
   }
 
   openAddJobModal(jobApplicationOrId?: JobApplication | string) {
@@ -118,6 +116,33 @@ export class HomeComponent implements OnInit {
     });
   }
 
+  addJobApplication(formGroup: FormGroup): void {
+    if (!formGroup.valid) {
+      if (formGroup.get('date')?.errors?.['required']) {
+        this.toastr.error('Application date is required');
+      } else {
+        this.toastr.error('Please fill in all required fields');
+      }
+      return;
+    }
+
+    const jobApplication = {
+      ...formGroup.value,
+      date: new Date(formGroup.value.date),
+      lastUpdate: new Date(),
+    };
+
+    this.jobApplicationService.addJobApplication(jobApplication).then((job) => {
+      if (!job) {
+        this.toastr.error('Failed to add job application');
+        return;
+      }
+      this.jobApplications = [...this.jobApplications, job];
+      this.showModal = false;
+      this.updateMetrics();
+    });
+  }
+
   // updateJobApplication(jobApplication: JobApplication): void {
   //   this.jobApplicationService.updateJobApplication(
   //     jobApplication.id,
@@ -137,6 +162,7 @@ export class HomeComponent implements OnInit {
       this.jobApplications = this.jobApplications.filter(
         (job) => job.id !== id,
       );
+      this.updateMetrics();
     });
   }
 }

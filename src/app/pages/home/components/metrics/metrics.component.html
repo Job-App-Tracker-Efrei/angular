@@ -3,7 +3,7 @@
     *ngFor="let metric of metrics"
     class="bg-white rounded-lg shadow-md p-6 flex items-center space-x-4"
   >
-    <div [ngSwitch]="metric" class="text-orange-500 text-3xl">
+    <div [ngSwitch]="metric.icon" class="text-orange-500 text-3xl">
       <i *ngSwitchCase="'briefcase'" class="fas fa-briefcase"></i>
       <i *ngSwitchCase="'clock'" class="fas fa-clock"></i>
       <i *ngSwitchCase="'check-circle'" class="fas fa-check-circle"></i>

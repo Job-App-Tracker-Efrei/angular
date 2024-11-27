@@ -9,11 +9,11 @@
     <p><strong>Status :</strong> {{ jobApplication.status }}</p>
     <p>
       <strong>Date of application:</strong>
-      {{ jobApplication.date.toLocaleString() }}
+      {{ jobApplication.date | date: "longDate" }}
     </p>
     <p>
       <strong>Last follow-up:</strong>
-      {{ jobApplication.lastUpdate.toLocaleString() }}
+      {{ jobApplication.lastUpdate | date: "longDate" }}
     </p>
 
     <button

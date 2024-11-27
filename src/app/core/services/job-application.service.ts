@@ -21,18 +21,18 @@ export class JobApplicationService {
 
   async addJobApplication(
     jobApplication: Omit<JobApplication, 'userId' | 'id'>,
-  ): Promise<boolean> {
+  ): Promise<JobApplication | null> {
     const user = await this.auth.currentUser;
     if (!user) {
       this.toastr.error('User not found');
-      return false;
+      return null;
     }
 
     const docRef = this.firestore.collection(this.collectionName).doc();
     const data = { ...jobApplication, userId: user.uid, id: docRef.ref.id };
     await docRef.set(data);
     this.toastr.success('Job application added');
-    return true;
+    return data;
   }
 
   async getJobApplications(): Promise<JobApplication[]> {
