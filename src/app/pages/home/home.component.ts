@@ -81,11 +81,13 @@ export class HomeComponent implements OnInit {
 
   openAddJobModal(jobApplicationOrId?: JobApplication | string) {
     this.showModal = true;
-    
+
     let jobToEdit: JobApplication | undefined;
-    
+
     if (typeof jobApplicationOrId === 'string') {
-      jobToEdit = this.jobApplications.find(job => job.id === jobApplicationOrId);
+      jobToEdit = this.jobApplications.find(
+        (job) => job.id === jobApplicationOrId,
+      );
     } else {
       jobToEdit = jobApplicationOrId;
     }
@@ -97,13 +99,13 @@ export class HomeComponent implements OnInit {
         position: jobToEdit.position,
         status: jobToEdit.status,
         date: this.formatDate(new Date(jobToEdit.date)),
-        lastUpdate: this.formatDate(new Date())
+        lastUpdate: this.formatDate(new Date()),
       });
     } else {
       this.jobApplicationForm.reset({
         status: JobApplicationStatus.pending,
         date: this.formatDate(new Date()),
-        lastUpdate: this.formatDate(new Date())
+        lastUpdate: this.formatDate(new Date()),
       });
     }
   }
@@ -113,7 +115,7 @@ export class HomeComponent implements OnInit {
     this.jobApplicationForm.reset({
       status: JobApplicationStatus.pending,
       date: this.formatDate(new Date()),
-      lastUpdate: this.formatDate(new Date())
+      lastUpdate: this.formatDate(new Date()),
     });
   }
 
