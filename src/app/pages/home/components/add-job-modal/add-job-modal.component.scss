@@ -1,0 +1,37 @@
+@keyframes modalFadeIn {
+    from {
+      opacity: 0;
+      transform: scale(0.8);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  
+  @keyframes modalFadeOut {
+    from {
+      opacity: 1;
+      transform: scale(1);
+    }
+    to {
+      opacity: 0;
+      transform: scale(0.8);
+    }
+  }
+  
+  :host {
+    display: block;
+  }
+  
+  #modal-overlay {
+    z-index: 1000;
+  }
+  
+  .modal-content {
+    animation: modalFadeIn 0.3s ease-out forwards;
+  }
+  
+  .modal-content.closing {
+    animation: modalFadeOut 0.3s ease-in forwards;
+  }

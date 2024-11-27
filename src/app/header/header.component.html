@@ -1,9 +1,14 @@
-<header class="bg-blue-500 text-white p-4 flex justify-between items-center">
-  <h1 routerLink="/" class="text-2xl font-bold">
-    <button>Job App Tracker</button>
-  </h1>
-  <div class="flex items-center">
-    <h2 class="text-lg font-bold mr-4">{{ user?.displayName }}</h2>
-    <button *ngIf="user" (click)="logout()">Logout</button>
+<header class="bg-gray-900 text-white p-4">
+  <div class="container mx-auto flex justify-between items-center">
+    <h1 class="text-2xl font-bold text-orange-500">Job App Tracker</h1>
+    <div class="flex items-center space-x-4">
+      <span class="text-sm">{{ user?.displayName }}</span>
+      <button
+        (click)="logout()"
+        class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-md text-sm font-medium"
+      >
+        Logout
+      </button>
+    </div>
   </div>
 </header>
