@@ -6,6 +6,7 @@
     "paths": {
       "@constants/*": ["src/constants/*"],
       "@utils/*": ["src/utils/*"],
+      "@validators/*": ["src/app/validators/*"],
       "@core/*": ["src/app/core/*"],
       "@pages/*": ["src/app/pages/*"],
     },

@@ -1,9 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 
 import { HOME } from '@constants/routes';
+
+import { emailValidator } from '@validators/email.validator';
 
 import { AuthService } from '@core/services/auth.service';
 
@@ -23,8 +30,8 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     this.loginForm = this.fb.group({
-      email: new FormControl(''),
-      password: new FormControl(''),
+      email: new FormControl('', [Validators.required, emailValidator()]),
+      password: new FormControl('', [Validators.required]),
     });
   }
 
@@ -36,7 +43,7 @@ export class LoginComponent implements OnInit {
 
   login() {
     const { email, password } = this.loginForm.value;
-    if (!email || !password) {
+    if (!this.loginForm.valid) {
       this.toastr.error('Please fill all fields');
       return;
     }

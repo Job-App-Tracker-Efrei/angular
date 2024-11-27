@@ -20,6 +20,7 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { FooterComponent } from './footer/footer.component';
 import { HeaderComponent } from './header/header.component';
+import { FormatDatePipe } from './pipes/format-date.pipe';
 
 import { environment } from '../environments/environment';
 
@@ -35,6 +36,7 @@ import { environment } from '../environments/environment';
     MetricsComponent,
     JobApplicationDetailsComponent,
     AddJobModalComponent,
+    FormatDatePipe,
   ],
   imports: [
     AngularFireAuthModule,
