@@ -11,6 +11,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { LoginComponent } from '@pages/auth/login/login.component';
 import { RegisterComponent } from '@pages/auth/register/register.component';
 import { AddJobModalComponent } from '@pages/home/components/add-job-modal/add-job-modal.component';
+import { EditJobModalComponent } from '@pages/home/components/edit-job-modal/edit-job-modal.component';
 import { JobApplicationTableComponent } from '@pages/home/components/job-application-table/job-application-table.component';
 import { MetricsComponent } from '@pages/home/components/metrics/metrics.component';
 import { HomeComponent } from '@pages/home/home.component';
@@ -36,6 +37,7 @@ import { environment } from '../environments/environment';
     MetricsComponent,
     JobApplicationDetailsComponent,
     AddJobModalComponent,
+    EditJobModalComponent,
     FormatDatePipe,
   ],
   imports: [

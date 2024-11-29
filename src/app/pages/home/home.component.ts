@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 
 import { JobApplicationService } from '@core/services/job-application.service';
@@ -23,13 +23,12 @@ export class HomeComponent implements OnInit {
   ];
 
   jobApplications: JobApplication[] = [];
+  jobModal: JobApplication | null = null;
   showAddJobApplicationForm = false;
-  jobApplicationForm!: FormGroup;
   showModal = false;
 
   constructor(
     private readonly jobApplicationService: JobApplicationService,
-    private readonly fb: FormBuilder,
     private readonly toastr: ToastrService,
   ) {}
 
@@ -38,18 +37,6 @@ export class HomeComponent implements OnInit {
       await this.jobApplicationService.getJobApplications();
 
     this.updateMetrics();
-
-    this.jobApplicationForm = this.fb.group({
-      company: ['', [Validators.required]],
-      position: ['', [Validators.required]],
-      status: [JobApplicationStatus.pending, [Validators.required]],
-      date: [this.formatDate(new Date()), [Validators.required]],
-      lastUpdate: [this.formatDate(new Date())],
-    });
-  }
-
-  private formatDate(date: Date): string {
-    return date.toISOString().split('T')[0];
   }
 
   private updateMetrics(): void {
@@ -76,44 +63,21 @@ export class HomeComponent implements OnInit {
     this.metrics[3].value = count[3];
   }
 
-  openAddJobModal(jobApplicationOrId?: JobApplication | string) {
+  openAddOrEditJobModal(jobId?: string) {
+    if (jobId) {
+      const job = this.jobApplications.find((item) => item.id === jobId);
+      if (!job) {
+        this.toastr.error('Job application not found');
+        return;
+      }
+      this.jobModal = job;
+    }
     this.showModal = true;
-
-    let jobToEdit: JobApplication | undefined;
-
-    if (typeof jobApplicationOrId === 'string') {
-      jobToEdit = this.jobApplications.find(
-        (job) => job.id === jobApplicationOrId,
-      );
-    } else {
-      jobToEdit = jobApplicationOrId;
-    }
-
-    if (jobToEdit) {
-      this.jobApplicationForm.patchValue({
-        id: jobToEdit.id,
-        company: jobToEdit.company,
-        position: jobToEdit.position,
-        status: jobToEdit.status,
-        date: this.formatDate(new Date(jobToEdit.date)),
-        lastUpdate: this.formatDate(new Date()),
-      });
-    } else {
-      this.jobApplicationForm.reset({
-        status: JobApplicationStatus.pending,
-        date: this.formatDate(new Date()),
-        lastUpdate: this.formatDate(new Date()),
-      });
-    }
   }
 
-  closeAddJobModal() {
+  closeAddOrEditJobModal() {
     this.showModal = false;
-    this.jobApplicationForm.reset({
-      status: JobApplicationStatus.pending,
-      date: this.formatDate(new Date()),
-      lastUpdate: this.formatDate(new Date()),
-    });
+    this.jobModal = null;
   }
 
   addJobApplication(formGroup: FormGroup): void {
@@ -143,17 +107,17 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  // updateJobApplication(jobApplication: JobApplication): void {
-  //   this.jobApplicationService.updateJobApplication(
-  //     jobApplication.id,
-  //     jobApplication,
-  //   );
-  //   this.jobApplications = this.jobApplications.map((job) =>
-  //     job.id === jobApplication.id ? jobApplication : job,
-  //   );
-  // }
-  updateJobApplication(id: string): void {
-    console.log('updateJobApplication', id);
+  editJobApplication(data: { id: string; form: FormGroup }): void {
+    this.jobApplicationService.updateJobApplication(data.id, {
+      ...data.form.value,
+      date: new Date(data.form.value.date),
+      lastUpdate: new Date(data.form.value.lastUpdate),
+    });
+    this.jobApplications = this.jobApplications.map((job) =>
+      job.id === data.id ? { ...data.form.value, id: data.id } : job,
+    );
+    this.updateMetrics();
+    this.closeAddOrEditJobModal();
   }
 
   deleteJobApplication(id: string): void {
