@@ -1,13 +1,7 @@
-import { state, style, transition, trigger } from '@angular/animations';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
-
+import { trigger, state, style, transition } from '@angular/animations';
 import { JobApplication } from 'src/types/job-application.type';
 
 @Component({
@@ -18,72 +12,69 @@ import { JobApplication } from 'src/types/job-application.type';
     trigger('modalAnimation', [
       state('open', style({})),
       state('closed', style({})),
-      transition('open => closed', []),
-      transition('closed => open', []),
-    ]),
+      transition('open <=> closed', []),
+    ])
   ],
 })
 export class EditJobModalComponent implements OnInit {
   @Input() job!: JobApplication;
-
   @Output() closeModal = new EventEmitter<void>();
-  @Output() editJob = new EventEmitter<{
-    id: string;
-    form: FormGroup;
-  }>();
+  @Output() editJob = new EventEmitter<{ id: string; form: FormGroup }>();
 
   jobForm: FormGroup;
 
   constructor(
     private fb: FormBuilder,
-    private readonly toastr: ToastrService,
+    private readonly toastr: ToastrService
   ) {
-    this.jobForm = this.fb.group({
-      company: new FormControl('', Validators.required),
-      position: new FormControl('', Validators.required),
-      status: new FormControl('', Validators.required),
-      date: new FormControl(
-        new Date().toISOString().split('T')[0],
-        Validators.required,
-      ),
-      lastUpdate: new FormControl(
-        new Date().toISOString().split('T')[0],
-        Validators.required,
-      ),
-    });
+    this.jobForm = this.createForm();
   }
 
   ngOnInit(): void {
     if (this.job) {
-      this.jobForm = this.fb.group({
-        company: new FormControl(this.job.company, Validators.required),
-        position: new FormControl(this.job.position, Validators.required),
-        status: new FormControl(this.job.status, Validators.required),
-        date: new FormControl(
-          new Date(this.job.date).toISOString().split('T')[0],
-          Validators.required,
-        ),
-        lastUpdate: new FormControl(
-          new Date(this.job.lastUpdate).toISOString().split('T')[0],
-          Validators.required,
-        ),
-      });
+      this.jobForm.setValue(this.jobToFormValues(this.job));
     }
   }
 
-  onSubmit() {
-    if (!this.jobForm.valid) {
+  private createForm(): FormGroup {
+    return this.fb.group({
+      company: ['', Validators.required],
+      position: ['', Validators.required],
+      status: ['', Validators.required],
+      date: [this.today(), Validators.required],
+      lastUpdate: [this.today(), Validators.required],
+    });
+  }
+
+  private today(): string {
+    return new Date().toISOString().split('T')[0];
+  }
+
+  private jobToFormValues(job: JobApplication): any {
+    return {
+      company: job.company,
+      position: job.position,
+      status: job.status,
+      date: new Date(job.date).toISOString().split('T')[0],
+      lastUpdate: new Date(job.lastUpdate).toISOString().split('T')[0],
+    };
+  }
+
+  onSubmit(): void {
+    if (this.jobForm.invalid) {
       this.toastr.error('Please fill out all required fields');
       return;
     }
+
     this.editJob.emit({
       id: this.job.id,
       form: this.jobForm,
     });
+
     this.jobForm.reset();
   }
 
-  onClose() {
+  onClose(): void {
     this.closeModal.emit();
   }
 }
