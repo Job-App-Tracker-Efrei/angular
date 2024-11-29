@@ -1,3 +1,4 @@
+import { state, style, transition, trigger } from '@angular/animations';
 import { Component, EventEmitter, Output } from '@angular/core';
 import {
   FormBuilder,
@@ -5,11 +6,20 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-add-job-modal',
   templateUrl: './add-job-modal.component.html',
   styleUrls: ['./add-job-modal.component.scss'],
+  animations: [
+    trigger('modalAnimation', [
+      state('open', style({})), // Style is defined by your CSS
+      state('closed', style({})),
+      transition('open => closed', []), // CSS handles the animations
+      transition('closed => open', []),
+    ]),
+  ],
 })
 export class AddJobModalComponent {
   @Output() closeModal = new EventEmitter<void>();
@@ -17,20 +27,28 @@ export class AddJobModalComponent {
 
   jobForm: FormGroup;
 
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private fb: FormBuilder,
+    private readonly toastr: ToastrService,
+  ) {
     this.jobForm = this.fb.group({
       company: new FormControl('', Validators.required),
       position: new FormControl('', Validators.required),
-      status: new FormControl('', Validators.required),
-      date: new FormControl(new Date(), Validators.required),
+      status: new FormControl('pending', Validators.required),
+      date: new FormControl(
+        new Date().toISOString().split('T')[0],
+        Validators.required,
+      ),
     });
   }
 
   onSubmit() {
-    this.addJob.emit(this.jobForm);
-    if (this.jobForm.valid) {
-      this.jobForm.reset();
+    if (!this.jobForm.valid) {
+      this.toastr.error('Please fill out all required fields');
+      return;
     }
+    this.addJob.emit(this.jobForm);
+    this.jobForm.reset();
   }
 
   onClose() {

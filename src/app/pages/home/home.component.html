@@ -18,7 +18,7 @@
       >
         <h2 class="text-xl font-semibold text-gray-800">Job Applications</h2>
         <button
-          (click)="openAddJobModal()"
+          (click)="openAddOrEditJobModal()"
           class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-md text-sm font-medium transition duration-150 ease-in-out"
         >
           New Job Application
@@ -27,7 +27,7 @@
 
       <app-job-application-table
         [jobApplications]="jobApplications"
-        (updateJobApplication)="openAddJobModal($event)"
+        (updateJobApplication)="openAddOrEditJobModal($event)"
         (deleteJobApplication)="deleteJobApplication($event)"
       ></app-job-application-table>
     </section>
@@ -36,11 +36,16 @@
   <!-- Footer -->
   <app-footer></app-footer>
 
-  <!-- Add/Edit Job Modal -->
+  <!-- Add Job Modal -->
   <app-add-job-modal
-    *ngIf="showModal"
-    [formGroup]="jobApplicationForm"
-    (closeModal)="closeAddJobModal()"
+    *ngIf="showModal && !jobModal"
+    (closeModal)="closeAddOrEditJobModal()"
     (addJob)="addJobApplication($event)"
   ></app-add-job-modal>
+  <app-edit-job-modal
+    *ngIf="showModal && jobModal"
+    [job]="jobModal"
+    (closeModal)="closeAddOrEditJobModal()"
+    (editJob)="editJobApplication($event)"
+  ></app-edit-job-modal>
 </div>
