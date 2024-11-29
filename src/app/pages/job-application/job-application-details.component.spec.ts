@@ -17,9 +17,7 @@ describe('JobApplicationDetailsComponent', () => {
     ]);
 
     TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule, // Provides Router and ActivatedRoute
-      ],
+      imports: [RouterTestingModule],
       declarations: [JobApplicationDetailsComponent],
       providers: [
         {
