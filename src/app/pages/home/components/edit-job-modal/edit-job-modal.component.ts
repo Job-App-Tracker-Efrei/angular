@@ -1,8 +1,12 @@
+import { state, style, transition, trigger } from '@angular/animations';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
-import { trigger, state, style, transition } from '@angular/animations';
-import { JobApplication } from 'src/types/job-application.type';
+
+import {
+  JobApplication,
+  JobApplicationStatus,
+} from 'src/types/job-application.type';
 
 @Component({
   selector: 'app-edit-job-modal',
@@ -13,7 +17,7 @@ import { JobApplication } from 'src/types/job-application.type';
       state('open', style({})),
       state('closed', style({})),
       transition('open <=> closed', []),
-    ])
+    ]),
   ],
 })
 export class EditJobModalComponent implements OnInit {
@@ -25,7 +29,7 @@ export class EditJobModalComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private readonly toastr: ToastrService
+    private readonly toastr: ToastrService,
   ) {
     this.jobForm = this.createForm();
   }
@@ -50,7 +54,13 @@ export class EditJobModalComponent implements OnInit {
     return new Date().toISOString().split('T')[0];
   }
 
-  private jobToFormValues(job: JobApplication): any {
+  private jobToFormValues(job: JobApplication): {
+    company: string;
+    position: string;
+    status: JobApplicationStatus;
+    date: string;
+    lastUpdate: string;
+  } {
     return {
       company: job.company,
       position: job.position,
