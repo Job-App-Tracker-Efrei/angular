@@ -1,27 +1,99 @@
-# AngularQuiz
+# Job App Tracker 📋
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.1.7.
+Job App Tracker is a modern web application built with **Angular 16** to help users track their job applications efficiently. The project integrates **Firebase** for backend services, including authentication and a Firestore database. It is fully containerized with **Docker**, uses **Node.js 22**, and includes **Kubernetes manifests** for scalable deployments.  
 
-## Development server
+📍 **Repository**: [Job App Tracker on GitHub](https://github.com/Job-App-Tracker-Efrei/angular)  
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+---
 
-## Code scaffolding
+## ✨ Features
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+- **Job Tracking**: Add, update, and delete job applications.  
+- **User Authentication**: Secure user login and registration via **Firebase Authentication**.  
+- **Cloud Database**: Persistent storage and real-time updates using **Firestore**.  
+- **Responsive UI**: Built with **TailwindCSS**, optimized for all screen sizes.  
+- **Dockerized Deployment**: Simplified deployment with Docker, running on port `8080`.  
+- **Kubernetes Ready**: Kubernetes manifests provided for cloud scalability.  
 
-## Build
+---
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+## 🛠️ Technologies Used
 
-## Running unit tests
+- **Frontend**: Angular 16  
+- **Styling**: TailwindCSS  
+- **Backend**: Firebase (Authentication and Firestore Database)  
+- **Node.js**: v22  
+- **Package Manager**: Yarn  
+- **Containerization**: Docker (port `8080`)  
+- **Orchestration**: Kubernetes  
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+---
 
-## Running end-to-end tests
+## 📦 Installation and Setup
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+### Prerequisites
 
-## Further help
+Ensure the following are installed on your system:  
+- **Node.js** (v22+)  
+- **Yarn** (v1.22+)  
+- **Docker** (v24+)  
+- **Kubernetes** (kubectl & Minikube or an active cluster)  
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+### Steps to Run Locally
+
+1. **Clone the Repository**  
+   ```bash
+   git clone https://github.com/Job-App-Tracker-Efrei/angular.git
+   cd angular
+   ```
+
+2. **Install Dependencies**  
+   ```bash
+   yarn install
+   ```
+
+3. **Run the Angular App**  
+   ```bash
+   yarn start
+   ```
+   The app will be accessible at `http://localhost:4200`.  
+
+---
+
+## 🐳 Running with Docker
+
+1. **Build the Docker Image**  
+   ```bash
+   docker build -t job-app-tracker:latest .
+   ```
+
+2. **Run the Docker Container**  
+   ```bash
+   docker run -p 8080:80 job-app-tracker:latest
+   ```
+   The application will be available at `http://localhost:8080`.  
+
+---
+
+## ☸️ Deploying with Kubernetes
+
+1. **Apply Kubernetes Manifests**  
+   ```bash
+   kubectl apply -f k8s/
+   ```
+
+2. **Access the Application**  
+   Configure your Kubernetes service or ingress to expose the application, typically on port `8080` for Docker-based deployments.  
+
+---
+
+## 🤝 Contributors
+
+This project is developed and maintained by:  
+- **Nolan**  
+- **Aymene**  
+- **Chahine**  
+
+---
+
+Let me know if you need further refinements! 🚀
