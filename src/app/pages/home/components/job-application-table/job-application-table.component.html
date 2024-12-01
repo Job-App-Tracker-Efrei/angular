@@ -45,14 +45,7 @@
           </td>
           <td class="px-6 py-4 whitespace-nowrap text-sm">
             <span
-              [ngClass]="{
-                'text-yellow-600 bg-yellow-100':
-                  job.status === JobApplicationStatus.pending,
-                'text-green-600 bg-green-100':
-                  job.status === JobApplicationStatus.accepted,
-                'text-red-600 bg-red-100':
-                  job.status === JobApplicationStatus.rejected,
-              }"
+              [appJobStatus]="job.status"
               class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full"
             >
               {{ job.status }}

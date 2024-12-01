@@ -25,10 +25,8 @@
         <h1 class="text-2xl font-bold">Application Details</h1>
       </div>
       <span
-        [class]="
-          'px-2 py-1 rounded-full text-xs font-semibold ' +
-          getStatusClass(jobApplication.status)
-        "
+        [appJobStatus]="jobApplication.status"
+        [class]="'px-2 py-1 rounded-full text-xs font-semibold'"
       >
         {{ jobApplication.status | titlecase }}
       </span>

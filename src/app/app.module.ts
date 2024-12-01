@@ -8,6 +8,10 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 
+import { JobStatusDirective } from '@directives/job-status.directive';
+
+import { FormatDatePipe } from '@pipes/format-date.pipe';
+
 import { LoginComponent } from '@pages/auth/login/login.component';
 import { RegisterComponent } from '@pages/auth/register/register.component';
 import { AddJobModalComponent } from '@pages/home/components/add-job-modal/add-job-modal.component';
@@ -21,7 +25,6 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { FooterComponent } from './footer/footer.component';
 import { HeaderComponent } from './header/header.component';
-import { FormatDatePipe } from './pipes/format-date.pipe';
 
 import { environment } from '../environments/environment';
 
@@ -39,6 +42,7 @@ import { environment } from '../environments/environment';
     AddJobModalComponent,
     EditJobModalComponent,
     FormatDatePipe,
+    JobStatusDirective,
   ],
   imports: [
     AngularFireAuthModule,

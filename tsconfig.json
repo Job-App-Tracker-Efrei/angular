@@ -6,6 +6,8 @@
     "paths": {
       "@constants/*": ["src/constants/*"],
       "@utils/*": ["src/utils/*"],
+      "@directives/*": ["src/app/directives/*"],
+      "@pipes/*": ["src/app/pipes/*"],
       "@validators/*": ["src/app/validators/*"],
       "@core/*": ["src/app/core/*"],
       "@pages/*": ["src/app/pages/*"],
