@@ -4,6 +4,8 @@ import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ToastrService } from 'ngx-toastr';
 
+import { JobStatusDirective } from '@directives/job-status.directive';
+
 import { JobApplicationService } from '@core/services/job-application.service';
 
 import { FooterComponent } from 'src/app/footer/footer.component';
@@ -28,6 +30,7 @@ describe('JobApplicationDetailsComponent', () => {
         JobApplicationDetailsComponent,
         HeaderComponent,
         FooterComponent,
+        JobStatusDirective,
       ],
       providers: [
         {
