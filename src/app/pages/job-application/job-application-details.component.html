@@ -28,7 +28,7 @@
         [appJobStatus]="jobApplication.status"
         [class]="'px-2 py-1 rounded-full text-xs font-semibold'"
       >
-        {{ jobApplication.status | titlecase }}
+        {{ jobApplication.status | statusLabel }}
       </span>
     </div>
 

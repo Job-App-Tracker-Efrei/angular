@@ -10,7 +10,7 @@ import { ToastrModule } from 'ngx-toastr';
 
 import { JobStatusDirective } from '@directives/job-status.directive';
 
-import { FormatDatePipe } from '@pipes/format-date.pipe';
+import { StatusLabelPipe } from '@pipes/status-label.pipe';
 
 import { LoginComponent } from '@pages/auth/login/login.component';
 import { RegisterComponent } from '@pages/auth/register/register.component';
@@ -41,8 +41,8 @@ import { environment } from '../environments/environment';
     JobApplicationDetailsComponent,
     AddJobModalComponent,
     EditJobModalComponent,
-    FormatDatePipe,
     JobStatusDirective,
+    StatusLabelPipe,
   ],
   imports: [
     AngularFireAuthModule,
