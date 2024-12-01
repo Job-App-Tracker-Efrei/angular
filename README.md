@@ -2,7 +2,8 @@
 
 Job App Tracker is a modern web application built with **Angular 16** to help users track their job applications efficiently. The project integrates **Firebase** for backend services, including authentication and a Firestore database. It is fully containerized with **Docker**, uses **Node.js 22**, and includes **Kubernetes manifests** for scalable deployments. The application is hosted on **Firebase Hosting** with a robust **CI/CD pipeline** for continuous integration and delivery.  
 
-📍 **Repository**: [Job App Tracker on GitHub](https://github.com/Job-App-Tracker-Efrei/angular)  
+📍 **Repository**: [Job App Tracker on GitHub](https://github.com/Job-App-Tracker-Efrei/angular) 
+📍 **Hosting**: [Job App Tracker on Website](http://job-tracker-efrei.web.app)
 
 ---
 
