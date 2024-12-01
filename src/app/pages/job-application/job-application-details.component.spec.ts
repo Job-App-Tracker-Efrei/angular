@@ -6,6 +6,8 @@ import { ToastrService } from 'ngx-toastr';
 
 import { JobStatusDirective } from '@directives/job-status.directive';
 
+import { StatusLabelPipe } from '@pipes/status-label.pipe';
+
 import { JobApplicationService } from '@core/services/job-application.service';
 
 import { FooterComponent } from 'src/app/footer/footer.component';
@@ -31,6 +33,7 @@ describe('JobApplicationDetailsComponent', () => {
         HeaderComponent,
         FooterComponent,
         JobStatusDirective,
+        StatusLabelPipe,
       ],
       providers: [
         {
